@@ -1,10 +1,19 @@
 """
 Supabase 인증 관련 함수
 """
+import os
 import streamlit as st
 from .database import get_supabase_client
 
 supabase = get_supabase_client()
+
+
+def _get_site_url() -> str:
+    """현재 앱의 URL 반환 (배포 환경 자동 감지)"""
+    try:
+        return st.secrets["SITE_URL"]
+    except (FileNotFoundError, KeyError):
+        return os.getenv("SITE_URL", "http://localhost:8501")
 
 
 def sign_up(email: str, password: str):
@@ -14,7 +23,7 @@ def sign_up(email: str, password: str):
             "email": email,
             "password": password,
             "options": {
-                "email_redirect_to": "http://localhost:8501"
+                "email_redirect_to": _get_site_url()
             }
         })
         return response

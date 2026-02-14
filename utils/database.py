@@ -2,18 +2,23 @@
 Supabase 데이터베이스 연결 및 쿼리 함수
 """
 import os
+import streamlit as st
 from supabase import create_client, Client
 from dotenv import load_dotenv
 
-# 환경변수 로드
+# 환경변수 로드 (로컬용 .env, Streamlit Cloud에서는 st.secrets 사용)
 load_dotenv()
 
-# Supabase 클라이언트 초기화
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+# Supabase 클라이언트 초기화 - Streamlit Cloud secrets 우선, 없으면 .env 사용
+try:
+    SUPABASE_URL = st.secrets["SUPABASE_URL"]
+    SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
+except (FileNotFoundError, KeyError):
+    SUPABASE_URL = os.getenv("SUPABASE_URL")
+    SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 if not SUPABASE_URL or not SUPABASE_KEY:
-    raise ValueError("SUPABASE_URL과 SUPABASE_KEY를 .env 파일에 설정해주세요.")
+    raise ValueError("SUPABASE_URL과 SUPABASE_KEY를 설정해주세요. (.env 또는 Streamlit Secrets)")
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
