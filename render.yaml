@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: inventory-control
+    runtime: docker
+    plan: free
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: SITE_URL
+        sync: false
