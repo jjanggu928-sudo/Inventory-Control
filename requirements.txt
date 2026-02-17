@@ -5,3 +5,5 @@ pandas>=2.2.0
 plotly>=5.18.0
 pillow>=10.2.0
 zxing-cpp>=2.2.0
+streamlit-option-menu>=0.3.0
+streamlit-lottie>=0.0.5
